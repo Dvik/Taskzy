@@ -6,6 +6,7 @@
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
+        android:name=".TaskApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -65,6 +66,8 @@
             android:name=".PickTaskActivity"
             android:label="@string/title_activity_pick_task"
             android:theme="@style/AppTheme"></activity>
+        <service android:name=".service.BackGroundService" />
+
     </application>
 
 </manifest>

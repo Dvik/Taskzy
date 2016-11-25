@@ -48,10 +48,11 @@ import java.util.List;
 
 import dvik.com.taskzy.adapter.StaggeredAdapter;
 import dvik.com.taskzy.data.SituationModel;
+import dvik.com.taskzy.receiver.TaskzyFenceReceiver;
 import dvik.com.taskzy.utils.Constants;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -67,10 +68,9 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Awareness.API)
-                .build();
-        mGoogleApiClient.connect();
+
+            mGoogleApiClient = TaskApplication.getGoogleApiHelper().getGoogleApiClient();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -195,83 +195,4 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-
-    public class TaskzyFenceReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(Constants.ACTION_FENCE, intent.getAction())) {
-                FenceState fenceState = FenceState.extract(intent);
-                Toast.makeText(context, "Received", Toast.LENGTH_SHORT).show();
-                //context.unregisterReceiver(this);
-
-                if (TextUtils.equals(Constants.IDLE_WITH_HEADPHONES_ON, fenceState.getFenceKey())) {
-
-                    if (fenceState.getCurrentState() == FenceState.TRUE) {
-                        if(intent.getExtras().getString("Weather").equals("Sunny")) {
-                            detectWeather(context,"Sunny");
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-        private void detectWeather(final Context context, String weatherString) {
-            /*if( !checkLocationPermission() ) {
-                return;
-            }*/
-            if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            Awareness.SnapshotApi.getWeather(mGoogleApiClient)
-                    .setResultCallback(new ResultCallback<WeatherResult>() {
-                        @Override
-                        public void onResult(@NonNull WeatherResult weatherResult) {
-                            Weather weather = weatherResult.getWeather();
-
-                            if (weather.getConditions()[0] == Weather.CONDITION_HAZY) {
-                                Toast.makeText(context, "You have come to the right place dear", Toast.LENGTH_LONG).show();
-                                NotificationManager notificationManager = (NotificationManager)
-                                        getSystemService(NOTIFICATION_SERVICE);
-                                // prepare intent which is triggered if the
-                                // notification is selected
-
-                                Intent intent = new Intent(context, SituationListActivity.class);
-                                // use System.currentTimeMillis() to have a unique ID for the pending intent
-                                PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
-
-                                // build notification
-                                // the addAction re-use the same intent to keep the example short
-                                Notification n  = new Notification.Builder(context)
-                                        .setContentTitle("New mail from " + "test@gmail.com")
-                                        .setContentText("Subject")
-                                        .setSmallIcon(R.drawable.ic_placeholder)
-                                        .setContentIntent(pIntent)
-                                        .setAutoCancel(true)
-                                        .addAction(R.drawable.ic_calendar, "Call", pIntent)
-                                        .addAction(R.drawable.ic_headphones, "More", pIntent)
-                                        .addAction(R.drawable.ic_error, "And more", pIntent).build();
-
-                                notificationManager.notify(0, n);
-                            }
-                        }
-                    });
-        }
-    }
-
 }
