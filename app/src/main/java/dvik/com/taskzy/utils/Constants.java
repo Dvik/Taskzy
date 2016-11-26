@@ -16,6 +16,7 @@ import dvik.com.taskzy.R;
 public class Constants {
 
     public final static String ACTION_FENCE = "dvik.taskzy.action_fence";
+    public final static int TASK_REQUEST_CODE = 1000;
 
     public static int getHeadPhoneStateInteger(String state, Context context) {
 

@@ -65,7 +65,12 @@
         <activity
             android:name=".PickTaskActivity"
             android:label="@string/title_activity_pick_task"
-            android:theme="@style/AppTheme" />
+            android:parentActivityName=".CreatePairActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CreatePairActivity" />
+        </activity>
 
         <receiver android:name=".receiver.TaskzyFenceReceiver">
             <intent-filter>

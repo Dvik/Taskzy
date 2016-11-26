@@ -76,7 +76,12 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
                                             mContext.getSystemService(NOTIFICATION_SERVICE);
                                     // prepare intent which is triggered if the
                                     // notification is selected
+                                    /*Intent intent = packageManager
+                                            .getLaunchIntentForPackage(app.packageName);
 
+                                    if (null != intent) {
+                                        startActivity(intent);
+                                    }*/
                                     Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(action);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     // use System.currentTimeMillis() to have a unique ID for the pending intent

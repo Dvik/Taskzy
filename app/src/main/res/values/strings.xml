@@ -11,7 +11,7 @@
     <string name="google_play_services_key">AIzaSyDfcbW6E2YyTV9h7fuaRbWC5fQXm7xCERg</string>
     <string name="title_activity_create_pair">CreatePairActivity</string>
     <string name="tap_to_choose">Tap to choose</string>
-    <string name="title_activity_pick_task">PickTaskActivity</string>
+    <string name="title_activity_pick_task">Apps</string>
 
     <string name="headphone_plugged">Headphones Plugged In</string>
     <string name="headphone_unplugged">Headphones Plugged Off</string>
