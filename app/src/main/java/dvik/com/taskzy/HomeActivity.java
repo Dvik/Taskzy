@@ -68,6 +68,9 @@ public class HomeActivity extends AppCompatActivity
 
 
         situationList.add(new SituationModel("Situation", "", "com.aranoah.healthkart.plus", "Open 1MG", getString(R.string.headphone_plugged),
+                getString(R.string.weather_clear), null, getString(R.string.still), "",""));
+
+        situationList.add(new SituationModel("Situation", "", "com.aranoah.healthkart.plus", "Open Flipkart", getString(R.string.headphone_plugged),
                 getString(R.string.weather_hazy), null, getString(R.string.still), "",""));
 
         staggeredAdapter = new StaggeredAdapter(mGoogleApiClient, situationList, HomeActivity.this);

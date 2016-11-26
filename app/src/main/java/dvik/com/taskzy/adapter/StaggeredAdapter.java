@@ -32,6 +32,7 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import dvik.com.taskzy.R;
 import dvik.com.taskzy.data.SituationModel;
@@ -159,10 +160,12 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
 
     private void startSituationReceiver(int pos, String[] stateArray, String action) {
 
+        int uniqueInt = new Random().nextInt(543254);
+
         Intent intent = new Intent(Constants.ACTION_FENCE);
         intent.putExtra("action", action);
 
-        String id = String.valueOf(System.currentTimeMillis());
+        String id = String.valueOf(uniqueInt);
         intent.putExtra("id", id);
         staggeredList.get(pos).setId(id);
 
@@ -194,7 +197,7 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
 
         AwarenessFence customFence = AwarenessFence.and(awarenessFences);
 
-        PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context, uniqueInt, intent, 0);
 
         Awareness.FenceApi.updateFences(googleApiClient, new FenceUpdateRequest.Builder()
                 .addFence(id, customFence, fencePendingIntent)
@@ -214,6 +217,11 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
     }
 
     private void stopSituationReceiver(int pos) {
+        Intent intent = new Intent(Constants.ACTION_FENCE);
+        PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context,
+                Integer.valueOf(staggeredList.get(pos).getId()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        fencePendingIntent.cancel();
+
         Awareness.FenceApi.updateFences(
                 googleApiClient,
                 new FenceUpdateRequest.Builder()

@@ -65,7 +65,7 @@
         <activity
             android:name=".PickTaskActivity"
             android:label="@string/title_activity_pick_task"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <receiver android:name=".receiver.TaskzyFenceReceiver">
             <intent-filter>
@@ -73,6 +73,11 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name=".data.SituationProvider"
+            android:authorities="dvik.com.taskzy.provider.SituationProvider"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

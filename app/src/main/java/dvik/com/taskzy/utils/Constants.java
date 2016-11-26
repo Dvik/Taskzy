@@ -17,8 +17,6 @@ public class Constants {
 
     public final static String ACTION_FENCE = "dvik.taskzy.action_fence";
 
-
-
     public static int getHeadPhoneStateInteger(String state, Context context) {
 
         if (state.equals(context.getString(R.string.headphone_plugged)))
