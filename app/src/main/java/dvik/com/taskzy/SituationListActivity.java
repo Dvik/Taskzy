@@ -46,8 +46,6 @@ public class SituationListActivity extends AppCompatActivity {
         init();
 
         recyclerView.setLayoutManager(layoutManager);
-        situationModelList.add(new SituationModel("Walk with headphones on","Plugged","","","Walking",""));
-        situationModelList.add(new SituationModel("Idle with headphones on","Plugged","","","Idle",""));
 
         situationListAdapter = new SituationListAdapter(situationModelList, SituationListActivity.this);
         recyclerView.setAdapter(situationListAdapter);

@@ -12,4 +12,26 @@
     <string name="title_activity_create_pair">CreatePairActivity</string>
     <string name="tap_to_choose">Tap to choose</string>
     <string name="title_activity_pick_task">PickTaskActivity</string>
+
+    <string name="headphone_plugged">Headphones Plugged In</string>
+    <string name="headphone_unplugged">Headphones Plugged Off</string>
+
+    <string name="weather_hazy">Hazy</string>
+    <string name="weather_snowy">Snowy</string>
+    <string name="weather_clear">Clear</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_foggy">Foggy</string>
+    <string name="weather_icy">Icy</string>
+    <string name="weather_rainy">Rainy</string>
+    <string name="weather_stormy">Stormy</string>
+    <string name="weather_windy">Windy</string>
+
+    <string name="in_vehicle">In Vehicle</string>
+    <string name="on_bicycle">On Bicycle</string>
+    <string name="on_foot">On Foot</string>
+    <string name="running">Running</string>
+    <string name="still">Still</string>
+    <string name="tilting">Tilting</string>
+    <string name="walking">Walking</string>
+
 </resources>
