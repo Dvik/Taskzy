@@ -6,12 +6,15 @@ import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by Divya on 11/27/2016.
+ * Created by Divya on 11/16/2016.
  */
 
-public class SituationModel implements Parcelable {
+public class SituationActionPairModel implements Parcelable{
 
     String name;
+    String id;
+    String action;
+    String actionName;
     String headPhoneState;
     String weatherState;
     LatLng placesState;
@@ -19,9 +22,12 @@ public class SituationModel implements Parcelable {
     String startTime;
     String endTime;
 
-    public SituationModel(String name, String headPhoneState, String weatherState, LatLng placesState, String userActivity, String startTime,
-                          String endTime) {
+    public SituationActionPairModel(String name, String id, String action, String actionName, String headPhoneState, String weatherState,
+                                    LatLng placesState, String userActivity, String startTime, String endTime) {
         this.name = name;
+        this.id = id;
+        this.action = action;
+        this.actionName = actionName;
         this.headPhoneState = headPhoneState;
         this.weatherState = weatherState;
         this.placesState = placesState;
@@ -30,8 +36,12 @@ public class SituationModel implements Parcelable {
         this.endTime = endTime;
     }
 
-    protected SituationModel(Parcel in) {
+
+    protected SituationActionPairModel(Parcel in) {
         name = in.readString();
+        id = in.readString();
+        action = in.readString();
+        actionName = in.readString();
         headPhoneState = in.readString();
         weatherState = in.readString();
         placesState = in.readParcelable(LatLng.class.getClassLoader());
@@ -40,17 +50,41 @@ public class SituationModel implements Parcelable {
         endTime = in.readString();
     }
 
-    public static final Creator<SituationModel> CREATOR = new Creator<SituationModel>() {
+    public static final Creator<SituationActionPairModel> CREATOR = new Creator<SituationActionPairModel>() {
         @Override
-        public SituationModel createFromParcel(Parcel in) {
-            return new SituationModel(in);
+        public SituationActionPairModel createFromParcel(Parcel in) {
+            return new SituationActionPairModel(in);
         }
 
         @Override
-        public SituationModel[] newArray(int size) {
-            return new SituationModel[size];
+        public SituationActionPairModel[] newArray(int size) {
+            return new SituationActionPairModel[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
 
     public String getName() {
         return name;
@@ -68,14 +102,6 @@ public class SituationModel implements Parcelable {
         this.headPhoneState = headPhoneState;
     }
 
-    public LatLng getPlacesState() {
-        return placesState;
-    }
-
-    public void setPlacesState(LatLng placesState) {
-        this.placesState = placesState;
-    }
-
     public String getWeatherState() {
         return weatherState;
     }
@@ -84,12 +110,12 @@ public class SituationModel implements Parcelable {
         this.weatherState = weatherState;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public LatLng getPlacesState() {
+        return placesState;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setPlacesState(LatLng placesState) {
+        this.placesState = placesState;
     }
 
     public String getUserActivity() {
@@ -100,6 +126,14 @@ public class SituationModel implements Parcelable {
         this.userActivity = userActivity;
     }
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
     public String getEndTime() {
         return endTime;
     }
@@ -107,7 +141,6 @@ public class SituationModel implements Parcelable {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-
 
     @Override
     public int describeContents() {
@@ -117,6 +150,9 @@ public class SituationModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
+        parcel.writeString(id);
+        parcel.writeString(action);
+        parcel.writeString(actionName);
         parcel.writeString(headPhoneState);
         parcel.writeString(weatherState);
         parcel.writeParcelable(placesState, i);

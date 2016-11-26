@@ -17,11 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dvik.com.taskzy.data.SituationModel;
 import dvik.com.taskzy.utils.Constants;
 
 public class CreatePairActivity extends AppCompatActivity {
@@ -128,7 +130,7 @@ public class CreatePairActivity extends AppCompatActivity {
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == Constants.TASK_REQUEST_CODE) {
-                if(data!=null) {
+                if (data != null) {
                     Bundle bundle = data.getExtras();
                     byte[] b = bundle.getByteArray("appIcon");
                     Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
@@ -139,6 +141,9 @@ public class CreatePairActivity extends AppCompatActivity {
     }
 
     public static class SituationFragment extends Fragment {
+
+        private FloatingActionButton floatingActionButton;
+        private TextView situationName;
 
         public SituationFragment() {
             // Required empty public constructor
@@ -153,8 +158,32 @@ public class CreatePairActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_situation, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_situation, container, false);
+            initViews(rootView);
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getActivity(), SituationListActivity.class);
+                    startActivityForResult(i, Constants.SITUATION_REQUEST_CODE);
+                }
+            });
+            return rootView;
         }
 
+        private void initViews(View v) {
+            floatingActionButton = (FloatingActionButton) v.findViewById(R.id.fab_situation);
+            situationName = (TextView) v.findViewById(R.id.situation_name);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == Constants.SITUATION_REQUEST_CODE) {
+                if (data != null) {
+                    SituationModel situation = data.getParcelableExtra("situation");
+                    situationName.setText(situation.getName());
+                }
+            }
+        }
     }
 }

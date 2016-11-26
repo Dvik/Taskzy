@@ -1,17 +1,22 @@
 package dvik.com.taskzy.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import dvik.com.taskzy.R;
 import dvik.com.taskzy.data.SituationModel;
+import dvik.com.taskzy.utils.Constants;
 
 /**
  * Created by Divya on 11/16/2016.
@@ -25,12 +30,12 @@ public class SituationListAdapter extends RecyclerView.Adapter<SituationListAdap
 
     public static class SituationViewHolder extends RecyclerView.ViewHolder {
         TextView situationTitle;
-        CardView itemContainer;
+        LinearLayout itemContainer;
 
         public SituationViewHolder(View v) {
             super(v);
-            situationTitle = (TextView) v.findViewById(R.id.situation_title);
-            itemContainer = (CardView) v.findViewById(R.id.layout_list);
+            situationTitle = (TextView) v.findViewById(R.id.situation_name);
+            itemContainer = (LinearLayout) v.findViewById(R.id.layout_situation_item);
         }
     }
 
@@ -51,33 +56,15 @@ public class SituationListAdapter extends RecyclerView.Adapter<SituationListAdap
     public void onBindViewHolder(final SituationViewHolder holder, final int position) {
 
         holder.situationTitle.setText(situationList.get(position).getName());
-
-        /*holder.itemContainer.setOnClickListener(new View.OnClickListener() {
+        holder.itemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    ArrayList<AwarenessFence> awarenessFences = new ArrayList<AwarenessFence>();
-
-                    if(!TextUtils.isEmpty(situationList.get(position).getUserActivity()))
-                    awarenessFences.add(DetectedActivityFence.during(DetectedActivityFence.STILL));
-
-                    if(!TextUtils.isEmpty(situationList.get(position).getHeadPhoneState()))
-                    awarenessFences.add(HeadphoneFence.during(HeadphoneState.PLUGGED_IN));
-
-
-                    AwarenessFence stillWithHeadPhoneFence = AwarenessFence.and(awarenessFences);
-
-                    Intent intent = new Intent(Constants.ACTION_FENCE);
-                    PendingIntent fencePendingIntent = PendingIntent.getBroadcast(((Activity) context), 0, intent, 0);
-
-                    TaskzyFenceReceiver mFenceBroadcastReceiver = new TaskzyFenceReceiver();
-                    ((Activity) context).registerReceiver(mFenceBroadcastReceiver, new IntentFilter(Constants.ACTION_FENCE));
-
-                    FenceUpdateRequest.Builder builder = new FenceUpdateRequest.Builder();
-                    builder.addFence(Constants.IDLE_WITH_HEADPHONES_ON, stillWithHeadPhoneFence, fencePendingIntent);
-
-                    Awareness.FenceApi.updateFences(googleApiClient, builder.build());
+                Intent i = new Intent();
+                i.putExtra("situation",situationList.get(position));
+                ((Activity) context).setResult(Constants.SITUATION_REQUEST_CODE, i);
+                ((Activity) context).finish();
             }
-        });*/
+        });
 
     }
 

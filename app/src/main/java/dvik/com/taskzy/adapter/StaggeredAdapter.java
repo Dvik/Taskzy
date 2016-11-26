@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 import dvik.com.taskzy.R;
-import dvik.com.taskzy.data.SituationModel;
+import dvik.com.taskzy.data.SituationActionPairModel;
 import dvik.com.taskzy.utils.Constants;
 
 /**
@@ -44,7 +43,7 @@ import dvik.com.taskzy.utils.Constants;
 
 public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.StaggeredViewHolder> {
 
-    private List<SituationModel> staggeredList;
+    private List<SituationActionPairModel> staggeredList;
     private Context context;
     private GoogleApiClient googleApiClient;
 
@@ -72,7 +71,7 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
         }
     }
 
-    public StaggeredAdapter(GoogleApiClient googleApiClient, List<SituationModel> staggeredList, Context context) {
+    public StaggeredAdapter(GoogleApiClient googleApiClient, List<SituationActionPairModel> staggeredList, Context context) {
         this.googleApiClient = googleApiClient;
         this.staggeredList = staggeredList;
         this.context = context;

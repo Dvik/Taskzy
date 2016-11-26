@@ -38,11 +38,11 @@
         <activity
             android:name=".SituationListActivity"
             android:label="@string/title_activity_situation_list"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName=".CreatePairActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dvik.com.taskzy.HomeActivity" />
+                android:value=".CreatePairActivity" />
         </activity>
         <activity
             android:name=".AddSituationActivity"

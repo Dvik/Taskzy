@@ -1,6 +1,5 @@
 package dvik.com.taskzy;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,27 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.awareness.Awareness;
-import com.google.android.gms.awareness.fence.AwarenessFence;
-import com.google.android.gms.awareness.fence.DetectedActivityFence;
-import com.google.android.gms.awareness.fence.FenceUpdateRequest;
-import com.google.android.gms.awareness.fence.HeadphoneFence;
-import com.google.android.gms.awareness.state.HeadphoneState;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dvik.com.taskzy.adapter.StaggeredAdapter;
-import dvik.com.taskzy.data.SituationModel;
-import dvik.com.taskzy.utils.Constants;
+import dvik.com.taskzy.data.SituationActionPairModel;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
-    List<SituationModel> situationList;
+    List<SituationActionPairModel> situationList;
     StaggeredAdapter staggeredAdapter;
     GoogleApiClient mGoogleApiClient;
 
@@ -69,10 +61,10 @@ public class HomeActivity extends AppCompatActivity
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
 
-        situationList.add(new SituationModel("Situation", "", "com.aranoah.healthkart.plus", "Open 1MG", getString(R.string.headphone_plugged),
+        situationList.add(new SituationActionPairModel("Situation", "", "com.aranoah.healthkart.plus", "Open 1MG", getString(R.string.headphone_plugged),
                 getString(R.string.weather_clear), null, getString(R.string.still), "",""));
 
-        situationList.add(new SituationModel("Situation", "", "com.aranoah.healthkart.plus", "Open Flipkart", getString(R.string.headphone_plugged),
+        situationList.add(new SituationActionPairModel("Situation", "", "com.aranoah.healthkart.plus", "Open Flipkart", getString(R.string.headphone_plugged),
                 getString(R.string.weather_hazy), null, getString(R.string.still), "",""));
 
         staggeredAdapter = new StaggeredAdapter(mGoogleApiClient, situationList, HomeActivity.this);
