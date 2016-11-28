@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="headphone_state_array">
+        <item>Plugged In</item>
+        <item>Unplugged</item>
+    </string-array>
+
+    <string-array name="weather_array">
+        <item>Hazy</item>
+        <item>Snowy</item>
+        <item>Clear</item>
+        <item>Cloudy</item>
+        <item>Foggy</item>
+        <item>Icy</item>
+        <item>Rainy</item>
+        <item>Stormy</item>
+        <item>Windy</item>
+    </string-array>
+
+    <string-array name="activity_array">
+        <item>In Vehicle</item>
+        <item>On Bicycle</item>
+        <item>On Foot</item>
+        <item>Running</item>
+        <item>Still</item>
+        <item>Tilting</item>
+        <item>Walking</item>
+    </string-array>
+
+</resources>

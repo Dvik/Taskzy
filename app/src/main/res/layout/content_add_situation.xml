@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dvik.com.taskzy.AddSituationActivity"
     tools:showIn="@layout/activity_add_situation">
@@ -19,9 +17,42 @@
         tools:showIn="@layout/activity_add_situation">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/name_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:foreground="?selectableItemBackground">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textColorHint="@color/colorAccent"
+                    android:padding="10dp">
+
+                    <EditText
+                        android:id = "@+id/name_edt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/situation_name"
+                        android:textColor="@android:color/white"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </FrameLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:id="@+id/headphone_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/name_card"
+            android:layout_margin="10dp"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -57,6 +88,7 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id = "@+id/tv_headphone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tap_to_choose"
@@ -66,7 +98,8 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id = "@+id/cancel_headphone"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
@@ -82,6 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/headphone_card"
+            android:layout_margin="10dp"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -117,6 +151,7 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id = "@+id/tv_weather"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tap_to_choose"
@@ -126,7 +161,8 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id = "@+id/cancel_weather"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
@@ -142,6 +178,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/weather_card"
+            android:layout_margin="10dp"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -177,6 +214,7 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id = "@+id/tv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tap_to_choose"
@@ -186,7 +224,8 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id = "@+id/cancel_location"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
@@ -202,6 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/location_card"
+            android:layout_margin="10dp"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -237,6 +277,7 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id = "@+id/tv_activity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tap_to_choose"
@@ -246,7 +287,8 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id = "@+id/cancel_user_activity"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
@@ -262,6 +304,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_activity_card"
+            android:layout_margin="10dp"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -284,19 +327,20 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/item_image5"
                         android:layout_margin="5dp"
+                        android:layout_toRightOf="@+id/item_image5"
                         android:orientation="vertical"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time and Date"
+                            android:text="Time"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id = "@+id/tv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tap_to_choose"
@@ -306,7 +350,8 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id = "@+id/cancel_time"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"

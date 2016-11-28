@@ -82,25 +82,30 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
                                     if (null != intent) {
                                         startActivity(intent);
                                     }*/
-                                    Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(action);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    // use System.currentTimeMillis() to have a unique ID for the pending intent
-                                    PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
+                                    try {
+                                        Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(action);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                    // build notification
-                                    // the addAction re-use the same intent to keep the example short
-                                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
-                                            .setContentTitle("New mail from " + "test@gmail.com")
-                                            .setContentText("Subject")
-                                            .setSmallIcon(R.drawable.ic_placeholder)
-                                            .setContentIntent(pIntent)
-                                            .setAutoCancel(true)
-                                            .addAction(R.drawable.ic_calendar, "Call", pIntent)
-                                            .addAction(R.drawable.ic_headphones, "More", pIntent)
-                                            .addAction(R.drawable.ic_error, "And more", pIntent);
-                                    Notification notification = notificationBuilder.build();
+                                        // use System.currentTimeMillis() to have a unique ID for the pending intent
+                                        PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
 
-                                    notificationManager.notify(0, notification);
+                                        // build notification
+                                        // the addAction re-use the same intent to keep the example short
+                                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                                                .setContentTitle("New mail from " + "test@gmail.com")
+                                                .setContentText("Subject")
+                                                .setSmallIcon(R.drawable.ic_placeholder)
+                                                .setContentIntent(pIntent)
+                                                .setAutoCancel(true)
+                                                .addAction(R.drawable.ic_calendar, "Call", pIntent)
+                                                .addAction(R.drawable.ic_headphones, "More", pIntent)
+                                                .addAction(R.drawable.ic_error, "And more", pIntent);
+                                        Notification notification = notificationBuilder.build();
+
+                                        notificationManager.notify(0, notification);
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         });
