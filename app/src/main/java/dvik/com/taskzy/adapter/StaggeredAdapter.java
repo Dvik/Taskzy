@@ -5,9 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,22 +32,21 @@ import com.google.android.gms.common.api.ResultCallbacks;
 import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import dvik.com.taskzy.R;
-import dvik.com.taskzy.data.SituationActionPairModel;
+import dvik.com.taskzy.data.SituationContract;
 import dvik.com.taskzy.utils.Constants;
+import dvik.com.taskzy.utils.CursorRecyclerViewAdapter;
 
 /**
  * Created by Divya on 11/18/2016.
  */
 
-public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.StaggeredViewHolder> {
+public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter.StaggeredViewHolder> {
 
-    private List<SituationActionPairModel> staggeredList;
     private Context context;
     private GoogleApiClient googleApiClient;
+    private Cursor cursor;
 
 
     public static class StaggeredViewHolder extends RecyclerView.ViewHolder {
@@ -71,9 +72,9 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
         }
     }
 
-    public StaggeredAdapter(GoogleApiClient googleApiClient, List<SituationActionPairModel> staggeredList, Context context) {
+    public StaggeredAdapter(GoogleApiClient googleApiClient, Cursor cursor, Context context) {
+        super(context, cursor);
         this.googleApiClient = googleApiClient;
-        this.staggeredList = staggeredList;
         this.context = context;
     }
 
@@ -86,66 +87,69 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
 
 
     @Override
-    public void onBindViewHolder(final StaggeredViewHolder holder, final int position) {
+    public void onBindViewHolder(final StaggeredViewHolder holder, Cursor cursor, final int position) {
 
-        holder.situationTitle.setText(staggeredList.get(position).getActionName());
+        final Integer id = cursor.getInt(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ID));
+        final String name = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_NAME));
+        final String heaphone = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE));
+        final String weather = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_WEATHER_STATE));
+        final String latitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LATITUDE));
+        final String longitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LONGITUDE));
+        final String userActivity = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTIVITY));
+        final String time = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_TIME));
+        final String action = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTION));
+        final String actionName = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTION_NAME));
 
-        if (staggeredList.get(position).getHeadPhoneState().equals("")) {
+
+        holder.situationTitle.setText("Open " + actionName);
+
+        if (TextUtils.isEmpty(heaphone)) {
             holder.llHeadphone.setVisibility(View.GONE);
         } else {
-            holder.headphone.setText(staggeredList.get(position).getHeadPhoneState());
+            holder.headphone.setText(heaphone);
         }
 
-        if (staggeredList.get(position).getWeatherState().equals("")) {
+        if (TextUtils.isEmpty(weather)) {
             holder.llWeather.setVisibility(View.GONE);
         } else {
-            holder.weather.setText(staggeredList.get(position).getWeatherState());
+            holder.weather.setText(weather);
         }
 
-        if (staggeredList.get(position).getPlacesState() == null) {
+        if (TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude)) {
             holder.llLocation.setVisibility(View.GONE);
         } else {
-            holder.location.setText(String.valueOf(staggeredList.get(position).getPlacesState().latitude)
-                    + String.valueOf(staggeredList.get(position).getPlacesState().longitude));
+            holder.location.setText(latitude + "," + longitude);
         }
 
-        if (staggeredList.get(position).getUserActivity().equals("")) {
+        if (TextUtils.isEmpty(userActivity)) {
             holder.llActivity.setVisibility(View.GONE);
         } else {
-            holder.activity.setText(staggeredList.get(position).getUserActivity());
+            holder.activity.setText(userActivity);
         }
 
-        if (staggeredList.get(position).getStartTime().equals("")) {
+        if (TextUtils.isEmpty(time)) {
             holder.llTime.setVisibility(View.GONE);
         } else {
-            holder.time.setText(staggeredList.get(position).getStartTime() + " " + staggeredList.get(position).getEndTime());
+            holder.time.setText(time);
         }
 
         holder.activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 String[] stateArray;
-                if (staggeredList.get(position).getPlacesState() == null) {
-                    stateArray = new String[]{staggeredList.get(position).getHeadPhoneState(),
-                            staggeredList.get(position).getWeatherState(),
-                            "",
-                            "",
-                            staggeredList.get(position).getUserActivity(),
-                            staggeredList.get(position).getStartTime(),
-                            staggeredList.get(position).getEndTime()};
-                } else {
-                    stateArray = new String[]{staggeredList.get(position).getHeadPhoneState(),
-                            staggeredList.get(position).getWeatherState(),
-                            String.valueOf(staggeredList.get(position).getPlacesState().latitude),
-                            String.valueOf(staggeredList.get(position).getPlacesState().longitude),
-                            staggeredList.get(position).getUserActivity(),
-                            staggeredList.get(position).getStartTime(),
-                            staggeredList.get(position).getEndTime()};
-                }
+
+                stateArray = new String[]{String.valueOf(id),
+                        heaphone,
+                        weather,
+                        latitude,
+                        longitude,
+                        userActivity,
+                        time};
+
                 if (isChecked) {
-                    startSituationReceiver(position, stateArray, staggeredList.get(position).getAction());
+                    startSituationReceiver(stateArray, action);
                 } else {
-                    stopSituationReceiver(position);
+                    stopSituationReceiver(String.valueOf(id));
                 }
             }
         });
@@ -154,52 +158,48 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
 
     @Override
     public int getItemCount() {
-        return staggeredList.size();
+        return super.getItemCount();
     }
 
-    private void startSituationReceiver(int pos, String[] stateArray, String action) {
-
-        int uniqueInt = new Random().nextInt(543254);
+    private void startSituationReceiver(String[] stateArray, String action) {
 
         Intent intent = new Intent(Constants.ACTION_FENCE);
         intent.putExtra("action", action);
 
-        String id = String.valueOf(uniqueInt);
-        intent.putExtra("id", id);
-        staggeredList.get(pos).setId(id);
+        intent.putExtra("id", stateArray[0]);
 
         ArrayList<AwarenessFence> awarenessFences = new ArrayList<AwarenessFence>();
 
-        if (!stateArray[0].equals("")) {
-            awarenessFences.add(HeadphoneFence.during(Constants.getHeadPhoneStateInteger(stateArray[0], context)));
+        if (!stateArray[1].equals("")) {
+            awarenessFences.add(HeadphoneFence.during(Constants.getHeadPhoneStateInteger(stateArray[1], context)));
         }
 
-        if (!stateArray[1].equals("")) {
-            Integer weatherId = Constants.getWeatherStateInteger(stateArray[1], context);
+        if (!stateArray[2].equals("")) {
+            Integer weatherId = Constants.getWeatherStateInteger(stateArray[2], context);
             intent.putExtra("Weather", weatherId);
         }
 
-        if (!stateArray[2].equals("") && !stateArray[3].equals("")) {
+        if (!stateArray[3].equals("") && !stateArray[4].equals("")) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            awarenessFences.add(LocationFence.in(Double.parseDouble(stateArray[2]), Double.parseDouble(stateArray[3]), 50.00, 5000));
-        }
-
-        if (!stateArray[4].equals("")) {
-            awarenessFences.add(DetectedActivityFence.during(Constants.getActivityStateInteger(stateArray[4], context)));
+            awarenessFences.add(LocationFence.in(Double.parseDouble(stateArray[3]), Double.parseDouble(stateArray[4]), 50.00, 5000));
         }
 
         if (!stateArray[5].equals("")) {
-            awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[5]), Long.parseLong(stateArray[6])));
+            awarenessFences.add(DetectedActivityFence.during(Constants.getActivityStateInteger(stateArray[5], context)));
+        }
+
+        if (!stateArray[6].equals("")) {
+            awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[6]), Long.parseLong(stateArray[6])+5L));
         }
 
         AwarenessFence customFence = AwarenessFence.and(awarenessFences);
 
-        PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context, uniqueInt, intent, 0);
+        PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context, Integer.valueOf(stateArray[0]), intent, 0);
 
         Awareness.FenceApi.updateFences(googleApiClient, new FenceUpdateRequest.Builder()
-                .addFence(id, customFence, fencePendingIntent)
+                .addFence(stateArray[0], customFence, fencePendingIntent)
                 .build())
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
@@ -215,16 +215,16 @@ public class StaggeredAdapter extends RecyclerView.Adapter<StaggeredAdapter.Stag
                 });
     }
 
-    private void stopSituationReceiver(int pos) {
+    private void stopSituationReceiver(String id) {
         Intent intent = new Intent(Constants.ACTION_FENCE);
         PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context,
-                Integer.valueOf(staggeredList.get(pos).getId()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.valueOf(id), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         fencePendingIntent.cancel();
 
         Awareness.FenceApi.updateFences(
                 googleApiClient,
                 new FenceUpdateRequest.Builder()
-                        .removeFence(staggeredList.get(pos).getId())
+                        .removeFence(id)
                         .build()).setResultCallback(new ResultCallbacks<Status>() {
             @Override
             public void onSuccess(@NonNull Status status) {

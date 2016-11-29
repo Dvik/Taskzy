@@ -27,10 +27,11 @@ public class SituationContract {
         public static final String COLUMN_LONGITUDE = "longitude";
         public static final String COLUMN_ACTIVITY = "activity";
         public static final String COLUMN_TIME = "time";
-
+        public static final String COLUMN_ACTION = "action";
+        public static final String COLUMN_ACTION_NAME = "action_name";
 
         public static final String[] SITUATION_PROJECTION = {COLUMN_ID, COLUMN_NAME, COLUMN_HEADPHONE_STATE,
-                COLUMN_WEATHER_STATE, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ACTIVITY, COLUMN_TIME};
+                COLUMN_WEATHER_STATE, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ACTIVITY, COLUMN_TIME,COLUMN_ACTION,COLUMN_ACTION_NAME};
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(TABLE_SITUATIONS).build();

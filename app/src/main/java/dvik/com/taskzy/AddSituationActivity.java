@@ -289,6 +289,9 @@ public class AddSituationActivity extends AppCompatActivity {
         contentValues.put(SituationContract.SituationEntry.COLUMN_LONGITUDE,longitudeText);
         contentValues.put(SituationContract.SituationEntry.COLUMN_ACTIVITY,activityText);
         contentValues.put(SituationContract.SituationEntry.COLUMN_TIME,savedTime);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION,"");
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION_NAME,"");
+
 
         getContentResolver().insert(SituationContract.SituationEntry.CONTENT_URI,
                 contentValues);

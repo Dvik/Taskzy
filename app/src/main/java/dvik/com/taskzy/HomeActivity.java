@@ -1,9 +1,13 @@
 package dvik.com.taskzy;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,16 +26,20 @@ import java.util.List;
 
 import dvik.com.taskzy.adapter.StaggeredAdapter;
 import dvik.com.taskzy.data.SituationActionPairModel;
+import dvik.com.taskzy.data.SituationContract;
 import dvik.com.taskzy.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,LoaderManager.LoaderCallbacks<Cursor> {
 
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
     List<SituationActionPairModel> situationList;
     StaggeredAdapter staggeredAdapter;
     GoogleApiClient mGoogleApiClient;
+    Cursor cursor;
+
+    private static final int CURSOR_LOADER_ID = 1;
 
 
     @Override
@@ -68,7 +76,7 @@ public class HomeActivity extends AppCompatActivity
         situationList.add(new SituationActionPairModel("Situation", "", "com.aranoah.healthkart.plus", "Open Flipkart", getString(R.string.headphone_plugged),
                 getString(R.string.weather_hazy), null, getString(R.string.still), "",""));
 
-        staggeredAdapter = new StaggeredAdapter(mGoogleApiClient, situationList, HomeActivity.this);
+        staggeredAdapter = new StaggeredAdapter(mGoogleApiClient, cursor, HomeActivity.this);
         recyclerView.setAdapter(staggeredAdapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,7 +94,10 @@ public class HomeActivity extends AppCompatActivity
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.content_home);
         situationList = new ArrayList<>();
+        getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
     }
+
+
 
 
     @Override
@@ -144,5 +155,30 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(HomeActivity.this, SituationContract.SituationEntry.CONTENT_URI,
+                SituationContract.SituationEntry.SITUATION_PROJECTION,
+                SituationContract.SituationEntry.COLUMN_ACTION + "!= ?",new String[]{""},
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        staggeredAdapter.swapCursor(data);
+        cursor = data;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        staggeredAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
     }
 }

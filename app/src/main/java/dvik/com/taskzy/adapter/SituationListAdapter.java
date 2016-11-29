@@ -58,28 +58,18 @@ public class SituationListAdapter extends CursorRecyclerViewAdapter<SituationLis
 
 
     @Override
-    public void onBindViewHolder(final SituationViewHolder holder, final Cursor cursor, final int position) {
+    public void onBindViewHolder(final SituationViewHolder holder, Cursor cursor, final int position) {
 
+        final Integer id = cursor.getInt(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ID));
         final String name = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_NAME));
-        final String head = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE));
-        final String weather = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_WEATHER_STATE));
-        final String latitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LATITUDE));
-        final String longitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LONGITUDE));
-        final String activity = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTIVITY));
-        final String time = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_TIME));
 
         holder.situationTitle.setText(name);
         holder.itemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent();
+                i.putExtra("situationId",id);
                 i.putExtra("situationName",name);
-                i.putExtra("situationHead",head);
-                i.putExtra("situationWeather",weather);
-                i.putExtra("situationLat",latitude);
-                i.putExtra("situationLong",longitude);
-                i.putExtra("situationAct",activity);
-                i.putExtra("situationTime",time);
                 ((Activity) context).setResult(Constants.SITUATION_REQUEST_CODE, i);
                 ((Activity) context).finish();
             }

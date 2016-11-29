@@ -1,9 +1,12 @@
 package dvik.com.taskzy;
 
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -13,6 +16,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +30,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import dvik.com.taskzy.data.SituationContract;
 import dvik.com.taskzy.data.SituationModel;
 import dvik.com.taskzy.utils.Constants;
 
-public class CreatePairActivity extends AppCompatActivity {
+public class CreatePairActivity extends AppCompatActivity implements PassSituationData, PassAppData {
 
     ViewPager viewPager;
     TabLayout tabLayout;
+    Integer id;
+    String nameText = "";
+    String appName = "", packageName = "";
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,7 @@ public class CreatePairActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_pair);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -60,6 +71,18 @@ public class CreatePairActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDataPass(Integer id,String nameText) {
+        this.id = id;
+        this.nameText = nameText;
+    }
+
+    @Override
+    public void onAppDataPass(String appName, String packageName) {
+        this.appName = appName;
+        this.packageName = packageName;
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -96,9 +119,26 @@ public class CreatePairActivity extends AppCompatActivity {
 
         FloatingActionButton addAppAction;
         ImageView appIcon;
+        PassAppData passAppData;
 
         public ActionFragment() {
             // Required empty public constructor
+        }
+
+        @Override
+        public void onAttach(Activity a) {
+            super.onAttach(a);
+            try {
+                passAppData = (PassAppData) a;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(a.toString() + " must implement PassAppData");
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            passAppData = null;
         }
 
         @Override
@@ -137,6 +177,7 @@ public class CreatePairActivity extends AppCompatActivity {
                     byte[] b = bundle.getByteArray("appIcon");
                     Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
                     appIcon.setImageBitmap(bmp);
+                    passAppData.onAppDataPass(bundle.getString("appName"), bundle.getString("appPackage"));
                 }
             }
         }
@@ -146,9 +187,28 @@ public class CreatePairActivity extends AppCompatActivity {
 
         private FloatingActionButton floatingActionButton;
         private TextView situationName;
+        PassSituationData dataListener;
+
 
         public SituationFragment() {
             // Required empty public constructor
+        }
+
+
+        @Override
+        public void onAttach(Activity a) {
+            super.onAttach(a);
+            try {
+                dataListener = (PassSituationData) a;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(a.toString() + " must implement PassSituationData");
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            dataListener = null;
         }
 
         @Override
@@ -182,8 +242,10 @@ public class CreatePairActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == Constants.SITUATION_REQUEST_CODE) {
                 if (data != null) {
-                    String name = data.getStringExtra("situationName");
-                    situationName.setText(name);
+                    Integer id = data.getIntExtra("situationId",0);
+                    String nameText = data.getStringExtra("situationName");
+                    dataListener.onDataPass(id,nameText);
+                    situationName.setText(nameText);
                 }
             }
         }
@@ -194,7 +256,7 @@ public class CreatePairActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            //saveData();
+            saveData();
             return true;
         }
 
@@ -206,4 +268,30 @@ public class CreatePairActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_save, menu);
         return true;
     }
+
+    private void saveData() {
+
+        if(TextUtils.isEmpty(appName))
+        {
+            Snackbar.make(coordinatorLayout,"Please select the APP to proceed",Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(nameText))
+        {
+            Snackbar.make(coordinatorLayout,"Please select the SITUATION to proceed",Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION,packageName);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION_NAME,appName);
+
+        getContentResolver().update(SituationContract.SituationEntry.CONTENT_URI,contentValues,
+                SituationContract.SituationEntry.COLUMN_ID + "= ?",new String[]{String.valueOf(id)});
+
+        finish();
+
+    }
+
 }

@@ -55,7 +55,6 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (prefManager.getShouldAddDefaultData()) {
-            Log.d("dvzd","svzs");
             addDefaultDataToDatabase();
             prefManager.setShouldAddDefaultData(false);
         }
@@ -103,6 +102,9 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_LONGITUDE, lon);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTIVITY, activity);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_TIME, time);
+        contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTION, "");
+        contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTION_NAME, "");
+
     }
 
     @Override
