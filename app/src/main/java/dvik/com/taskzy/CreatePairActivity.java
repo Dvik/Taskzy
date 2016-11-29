@@ -30,6 +30,8 @@ import java.util.List;
 
 import dvik.com.taskzy.data.SituationContract;
 import dvik.com.taskzy.utils.Constants;
+import dvik.com.taskzy.utils.PassAppData;
+import dvik.com.taskzy.utils.PassSituationData;
 
 public class CreatePairActivity extends AppCompatActivity implements PassSituationData, PassAppData {
 

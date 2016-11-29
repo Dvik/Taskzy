@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.google.android.gms.common.api.ResultCallbacks;
 import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import dvik.com.taskzy.R;
 import dvik.com.taskzy.data.SituationContract;
@@ -221,7 +223,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         }
 
         if (!stateArray[6].equals("")) {
-            awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[6]), Long.parseLong(stateArray[6]) + 5L));
+            awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[6]), Long.MAX_VALUE));
         }
 
         AwarenessFence customFence = AwarenessFence.and(awarenessFences);

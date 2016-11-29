@@ -1,9 +1,13 @@
 package dvik.com.taskzy.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 
@@ -60,6 +64,20 @@ public class Utils {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
+    }
+
+    public static boolean hasLocationPermission(Context context) {
+        if(context != null) {
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
+    }
+
+    public static void requestLocationPermission(Activity activity,int requestCode) {
+        if(activity!=null) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    requestCode);
+        }
     }
 
 }

@@ -41,6 +41,7 @@
     <string name="no_name_warning">Please provide a SITUATION NAME to proceed</string>
     <string name="save">Save</string>
     <string name="add">Add</string>
+    <string name="empty_layout_message">You don\'t have any registered situation-action pair. Use the \'+\' icon above to start creating pairs.</string>
 
 
 </resources>
