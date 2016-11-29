@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import dvik.com.taskzy.R;
 import dvik.com.taskzy.TaskApplication;
 import dvik.com.taskzy.utils.Constants;
+import dvik.com.taskzy.utils.Utils;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -64,51 +65,53 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                Awareness.SnapshotApi.getWeather(mGoogleApiClient)
-                        .setResultCallback(new ResultCallback<WeatherResult>() {
-                            @Override
-                            public void onResult(@NonNull WeatherResult weatherResult) {
-                                Weather weather = weatherResult.getWeather();
+                if (Utils.isPlayServicesAvailable(context)) {
+                    Awareness.SnapshotApi.getWeather(mGoogleApiClient)
+                            .setResultCallback(new ResultCallback<WeatherResult>() {
+                                @Override
+                                public void onResult(@NonNull WeatherResult weatherResult) {
+                                    Weather weather = weatherResult.getWeather();
 
-                                if (weather.getConditions()[0] == weatherId) {
-                                    Toast.makeText(mContext, "You have come to the right place dear", Toast.LENGTH_LONG).show();
-                                    NotificationManager notificationManager = (NotificationManager)
-                                            mContext.getSystemService(NOTIFICATION_SERVICE);
-                                    // prepare intent which is triggered if the
-                                    // notification is selected
+                                    if (weather.getConditions()[0] == weatherId) {
+                                        Toast.makeText(mContext, "You have come to the right place dear", Toast.LENGTH_LONG).show();
+                                        NotificationManager notificationManager = (NotificationManager)
+                                                mContext.getSystemService(NOTIFICATION_SERVICE);
+                                        // prepare intent which is triggered if the
+                                        // notification is selected
                                     /*Intent intent = packageManager
                                             .getLaunchIntentForPackage(app.packageName);
 
                                     if (null != intent) {
                                         startActivity(intent);
                                     }*/
-                                    try {
-                                        Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(action);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        try {
+                                            Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(action);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                        // use System.currentTimeMillis() to have a unique ID for the pending intent
-                                        PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
+                                            // use System.currentTimeMillis() to have a unique ID for the pending intent
+                                            PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
 
-                                        // build notification
-                                        // the addAction re-use the same intent to keep the example short
-                                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
-                                                .setContentTitle("New mail from " + "test@gmail.com")
-                                                .setContentText("Subject")
-                                                .setSmallIcon(R.drawable.ic_placeholder)
-                                                .setContentIntent(pIntent)
-                                                .setAutoCancel(true)
-                                                .addAction(R.drawable.ic_calendar, "Call", pIntent)
-                                                .addAction(R.drawable.ic_headphones, "More", pIntent)
-                                                .addAction(R.drawable.ic_error, "And more", pIntent);
-                                        Notification notification = notificationBuilder.build();
+                                            // build notification
+                                            // the addAction re-use the same intent to keep the example short
+                                            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                                                    .setContentTitle("New mail from " + "test@gmail.com")
+                                                    .setContentText("Subject")
+                                                    .setSmallIcon(R.drawable.ic_placeholder)
+                                                    .setContentIntent(pIntent)
+                                                    .setAutoCancel(true)
+                                                    .addAction(R.drawable.ic_calendar, "Call", pIntent)
+                                                    .addAction(R.drawable.ic_headphones, "More", pIntent)
+                                                    .addAction(R.drawable.ic_error, "And more", pIntent);
+                                            Notification notification = notificationBuilder.build();
 
-                                        notificationManager.notify(0, notification);
-                                    } catch (NullPointerException e) {
-                                        e.printStackTrace();
+                                            notificationManager.notify(0, notification);
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         }
 

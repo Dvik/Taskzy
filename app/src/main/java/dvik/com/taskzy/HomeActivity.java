@@ -22,6 +22,7 @@ import java.util.List;
 
 import dvik.com.taskzy.adapter.StaggeredAdapter;
 import dvik.com.taskzy.data.SituationActionPairModel;
+import dvik.com.taskzy.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,9 +41,9 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        if(Utils.isGooglePlayServicesAvailable(HomeActivity.this)) {
             mGoogleApiClient = TaskApplication.getGoogleApiHelper().getGoogleApiClient();
-
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
