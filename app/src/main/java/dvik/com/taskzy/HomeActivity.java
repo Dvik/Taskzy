@@ -3,7 +3,6 @@ package dvik.com.taskzy;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -17,15 +16,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dvik.com.taskzy.adapter.StaggeredAdapter;
-import dvik.com.taskzy.data.SituationActionPairModel;
 import dvik.com.taskzy.data.SituationContract;
 import dvik.com.taskzy.utils.Utils;
 
@@ -34,7 +28,6 @@ public class HomeActivity extends AppCompatActivity
 
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
-    List<SituationActionPairModel> situationList;
     StaggeredAdapter staggeredAdapter;
     GoogleApiClient mGoogleApiClient;
     Cursor cursor;
@@ -53,28 +46,12 @@ public class HomeActivity extends AppCompatActivity
             mGoogleApiClient = TaskApplication.getGoogleApiHelper().getGoogleApiClient();
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(HomeActivity.this,CreatePairActivity.class);
-                startActivity(i);
-            }
-        });
-
         init();
 
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
-
-
-        situationList.add(new SituationActionPairModel("Situation", "", "com.aranoah.healthkart.plus", "Open 1MG", getString(R.string.headphone_plugged),
-                getString(R.string.weather_clear), null, getString(R.string.still), "",""));
-
-        situationList.add(new SituationActionPairModel("Situation", "", "com.aranoah.healthkart.plus", "Open Flipkart", getString(R.string.headphone_plugged),
-                getString(R.string.weather_hazy), null, getString(R.string.still), "",""));
 
         staggeredAdapter = new StaggeredAdapter(mGoogleApiClient, cursor, HomeActivity.this);
         recyclerView.setAdapter(staggeredAdapter);
@@ -93,7 +70,6 @@ public class HomeActivity extends AppCompatActivity
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.content_home);
-        situationList = new ArrayList<>();
         getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
     }
 
@@ -125,7 +101,9 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
+            Intent i = new Intent(HomeActivity.this,CreatePairActivity.class);
+            startActivity(i);
             return true;
         }
 

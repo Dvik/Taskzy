@@ -12,21 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
-
 import dvik.com.taskzy.adapter.SituationListAdapter;
 import dvik.com.taskzy.data.SituationContract;
-import dvik.com.taskzy.data.SituationModel;
 import dvik.com.taskzy.utils.PrefManager;
 
 public class SituationListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     RecyclerView recyclerView;
-    ArrayList<SituationModel> situationList;
     LinearLayoutManager layoutManager;
     SituationListAdapter situationListAdapter;
     PrefManager prefManager;
@@ -59,7 +54,7 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
             prefManager.setShouldAddDefaultData(false);
         }
 
-        situationListAdapter = new SituationListAdapter(SituationListActivity.this,cursor);
+        situationListAdapter = new SituationListAdapter(SituationListActivity.this, cursor);
         recyclerView.setAdapter(situationListAdapter);
 
 
@@ -67,7 +62,6 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.content_situation_list);
-        situationList = new ArrayList<>();
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         prefManager = new PrefManager(SituationListActivity.this);
@@ -86,7 +80,7 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
         addToContentValue(6, "Walking on a clear day", getString(R.string.weather_clear), "", "", "", getString(R.string.walking), "");
         addToContentValue(7, "In Vehicle", "", "", "", "", getString(R.string.in_vehicle), "");
         addToContentValue(8, "In Vehicle with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.in_vehicle), "");
-        addToContentValue(9, "Bicycling with Headphones plugged in", getString(R.string.headphone_plugged), "", "","", getString(R.string.on_bicycle), "");
+        addToContentValue(9, "Bicycling with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.on_bicycle), "");
 
 
         getContentResolver().bulkInsert(SituationContract.SituationEntry.CONTENT_URI,
@@ -104,14 +98,14 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_TIME, time);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTION, "");
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTION_NAME, "");
-
+        contentValues[i].put(SituationContract.SituationEntry.COLUMN_CHECKED, "0");
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(SituationListActivity.this, SituationContract.SituationEntry.CONTENT_URI,
                 SituationContract.SituationEntry.SITUATION_PROJECTION,
-                null, null, SituationContract.SituationEntry.COLUMN_ID+" DESC");
+                null, null, SituationContract.SituationEntry.COLUMN_ID + " DESC");
     }
 
     @Override
@@ -139,7 +133,7 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
                 return true;
         }
 
-        return(super.onOptionsItemSelected(item));
+        return (super.onOptionsItemSelected(item));
     }
 
 

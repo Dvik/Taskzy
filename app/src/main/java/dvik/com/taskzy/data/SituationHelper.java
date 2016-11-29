@@ -33,7 +33,8 @@ public class SituationHelper extends SQLiteOpenHelper {
                 SituationContract.SituationEntry.COLUMN_ACTIVITY + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_TIME + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_ACTION + " TEXT NOT NULL, " +
-                SituationContract.SituationEntry.COLUMN_ACTION_NAME + " TEXT NOT NULL);";
+                SituationContract.SituationEntry.COLUMN_ACTION_NAME + " TEXT NOT NULL, " +
+                SituationContract.SituationEntry.COLUMN_CHECKED + " TEXT NOT NULL);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_SITUATION_TABLE);
 

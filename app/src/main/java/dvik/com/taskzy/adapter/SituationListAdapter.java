@@ -4,22 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
-
 import dvik.com.taskzy.R;
 import dvik.com.taskzy.data.SituationContract;
-import dvik.com.taskzy.data.SituationModel;
-import dvik.com.taskzy.data.SituationProvider;
 import dvik.com.taskzy.utils.Constants;
 import dvik.com.taskzy.utils.CursorRecyclerViewAdapter;
 

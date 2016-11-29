@@ -40,6 +40,7 @@
     <string name="situation_name">Situation Name</string>
     <string name="no_name_warning">Please provide a SITUATION NAME to proceed</string>
     <string name="save">Save</string>
+    <string name="add">Add</string>
 
 
 </resources>

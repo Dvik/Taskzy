@@ -2,6 +2,7 @@ package dvik.com.taskzy.adapter;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -99,7 +100,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         final String time = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_TIME));
         final String action = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTION));
         final String actionName = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTION_NAME));
-
+        final String checked = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_CHECKED));
 
         holder.situationTitle.setText("Open " + actionName);
 
@@ -133,6 +134,12 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
             holder.time.setText(time);
         }
 
+        if (!TextUtils.isEmpty(checked)) {
+            if (TextUtils.equals(checked, "1"))
+                holder.activate.setChecked(true);
+            else holder.activate.setChecked(false);
+        }
+
         holder.activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -147,10 +154,14 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                         time};
 
                 if (isChecked) {
+                    setPairChecked("1", String.valueOf(id));
                     startSituationReceiver(stateArray, action);
                 } else {
+                    setPairChecked("0", String.valueOf(id));
                     stopSituationReceiver(String.valueOf(id));
                 }
+
+
             }
         });
 
@@ -159,6 +170,14 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
     @Override
     public int getItemCount() {
         return super.getItemCount();
+    }
+
+    private void setPairChecked(String checked, String id) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SituationContract.SituationEntry.COLUMN_CHECKED, checked);
+
+        context.getContentResolver().update(SituationContract.SituationEntry.CONTENT_URI, contentValues,
+                SituationContract.SituationEntry.COLUMN_ID + "= ?", new String[]{String.valueOf(id)});
     }
 
     private void startSituationReceiver(String[] stateArray, String action) {
@@ -191,7 +210,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         }
 
         if (!stateArray[6].equals("")) {
-            awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[6]), Long.parseLong(stateArray[6])+5L));
+            awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[6]), Long.parseLong(stateArray[6]) + 5L));
         }
 
         AwarenessFence customFence = AwarenessFence.and(awarenessFences);
