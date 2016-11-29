@@ -9,13 +9,16 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ import dvik.com.taskzy.R;
 import dvik.com.taskzy.data.SituationContract;
 import dvik.com.taskzy.utils.Constants;
 import dvik.com.taskzy.utils.CursorRecyclerViewAdapter;
+import dvik.com.taskzy.utils.Utils;
 
 /**
  * Created by Divya on 11/18/2016.
@@ -55,6 +59,8 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         TextView headphone, weather, location, activity, time;
         LinearLayout llHeadphone, llWeather, llLocation, llActivity, llTime;
         Switch activate;
+        ProgressBar progressBar;
+        FrameLayout itemContainer;
 
         public StaggeredViewHolder(View v) {
             super(v);
@@ -70,6 +76,8 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
             llActivity = (LinearLayout) v.findViewById(R.id.ll_activity_list_home);
             llTime = (LinearLayout) v.findViewById(R.id.ll_time_list_home);
             activate = (Switch) v.findViewById(R.id.switch_activate);
+            progressBar = (ProgressBar) v.findViewById(R.id.progress_dialog);
+            itemContainer = (FrameLayout) v.findViewById(R.id.content_item);
         }
     }
 
@@ -131,7 +139,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         if (TextUtils.isEmpty(time)) {
             holder.llTime.setVisibility(View.GONE);
         } else {
-            holder.time.setText(time);
+            holder.time.setText(Utils.getProperDate(Long.parseLong(time), "dd/MM/yyyy hh:mm"));
         }
 
         if (!TextUtils.isEmpty(checked)) {
@@ -143,6 +151,8 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         holder.activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                holder.itemContainer.setBackgroundColor(ContextCompat.getColor(context,R.color.item_progress));
+                holder.progressBar.setVisibility(View.VISIBLE);
                 String[] stateArray;
 
                 stateArray = new String[]{String.valueOf(id),
@@ -155,10 +165,10 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
 
                 if (isChecked) {
                     setPairChecked("1", String.valueOf(id));
-                    startSituationReceiver(stateArray, action);
+                    startSituationReceiver(holder.itemContainer,holder.progressBar,stateArray, action, actionName);
                 } else {
                     setPairChecked("0", String.valueOf(id));
-                    stopSituationReceiver(String.valueOf(id));
+                    stopSituationReceiver(holder.itemContainer,holder.progressBar,String.valueOf(id));
                 }
 
 
@@ -180,10 +190,11 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                 SituationContract.SituationEntry.COLUMN_ID + "= ?", new String[]{String.valueOf(id)});
     }
 
-    private void startSituationReceiver(String[] stateArray, String action) {
+    private void startSituationReceiver(final View container, final View progress, String[] stateArray, String action, String actionName) {
 
         Intent intent = new Intent(Constants.ACTION_FENCE);
         intent.putExtra("action", action);
+        intent.putExtra("appName", actionName);
 
         intent.putExtra("id", stateArray[0]);
 
@@ -223,8 +234,10 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
+
+                        container.setBackgroundColor(ContextCompat.getColor(context,R.color.item_back));
+                        progress.setVisibility(View.GONE);
                         if (status.isSuccess()) {
-                            Toast.makeText(context, "Activated Successfully", Toast.LENGTH_LONG).show();
                         }
 
                         if (status.isCanceled() || status.isInterrupted()) {
@@ -234,7 +247,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                 });
     }
 
-    private void stopSituationReceiver(String id) {
+    private void stopSituationReceiver(final View container, final View progress,String id) {
         Intent intent = new Intent(Constants.ACTION_FENCE);
         PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context,
                 Integer.valueOf(id), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -247,11 +260,14 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                         .build()).setResultCallback(new ResultCallbacks<Status>() {
             @Override
             public void onSuccess(@NonNull Status status) {
-                Toast.makeText(context, "De-activated successfully", Toast.LENGTH_LONG).show();
+                container.setBackgroundColor(ContextCompat.getColor(context,R.color.item_back));
+                progress.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(@NonNull Status status) {
+                container.setBackgroundColor(ContextCompat.getColor(context,R.color.item_back));
+                progress.setVisibility(View.GONE);
                 Toast.makeText(context, "Couldn't de-activate fence. Please try again!!", Toast.LENGTH_LONG).show();
 
             }

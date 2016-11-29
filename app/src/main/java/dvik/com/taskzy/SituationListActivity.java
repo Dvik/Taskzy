@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -12,8 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import dvik.com.taskzy.adapter.SituationListAdapter;
 import dvik.com.taskzy.data.SituationContract;
@@ -39,14 +38,6 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
 
         init();
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SituationListActivity.this, AddSituationActivity.class));
-            }
-        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (prefManager.getShouldAddDefaultData()) {
@@ -131,9 +122,19 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_add:
+                startActivity(new Intent(SituationListActivity.this, AddSituationActivity.class));
+                return true;
         }
 
         return (super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
     }
 
 

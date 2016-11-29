@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="headphone_state_array">
-        <item>Plugged In</item>
-        <item>Unplugged</item>
+        <item>Headphones Plugged In</item>
+        <item>Headphones Plugged Off</item>
     </string-array>
 
     <string-array name="weather_array">

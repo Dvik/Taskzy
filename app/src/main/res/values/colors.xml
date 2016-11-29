@@ -8,4 +8,7 @@
     <color name="colorSecondaryText">#757575</color>
     <color name="colorIcon">#FFFFFF</color>
     <color name="colorDivider">#BDBDBD</color>
+
+    <color name="item_progress">#75465a65</color>
+    <color name="item_back">#465A65</color>
 </resources>
