@@ -61,9 +61,8 @@ public class Utils {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static String getProperDate(long milliSeconds, String dateFormat)
-    {
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat,Locale.getDefault());
+    public static String getProperDate(long milliSeconds, String dateFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTimeInMillis(milliSeconds);
@@ -71,14 +70,14 @@ public class Utils {
     }
 
     public static boolean hasLocationPermission(Context context) {
-        if(context != null) {
+        if (context != null) {
             return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         }
         return false;
     }
 
-    public static void requestLocationPermission(Activity activity,int requestCode) {
-        if(activity!=null) {
+    public static void requestLocationPermission(Activity activity, int requestCode) {
+        if (activity != null) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     requestCode);
         }
