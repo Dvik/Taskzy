@@ -19,6 +19,8 @@ public class Constants {
     public final static int TASK_REQUEST_CODE = 1000;
     public final static int SITUATION_REQUEST_CODE = 1001;
     public final static int LOCATION_REQUEST_CODE =1002;
+    public static final String ACTION_DATA_UPDATED =
+            "dvik.com.taskzy.ACTION_DATA_UPDATED";
 
     public static int getHeadPhoneStateInteger(String state, Context context) {
 

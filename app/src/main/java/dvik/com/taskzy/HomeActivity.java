@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -28,7 +30,7 @@ import dvik.com.taskzy.utils.Constants;
 import dvik.com.taskzy.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -36,6 +38,7 @@ public class HomeActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     Cursor cursor;
     CardView emptyLayout;
+    CoordinatorLayout coordinatorLayout;
 
     private static final int CURSOR_LOADER_ID = 1;
 
@@ -43,16 +46,17 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.app_bar_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (Utils.isGooglePlayServicesAvailable(HomeActivity.this)) {
-            mGoogleApiClient = TaskApplication.getGoogleApiHelper().getGoogleApiClient();
-        }
-
         init();
 
+        if (Utils.isGooglePlayServicesAvailable(HomeActivity.this)) {
+            mGoogleApiClient = TaskApplication.getGoogleApiHelper().getGoogleApiClient();
+        } else {
+            Snackbar.make(coordinatorLayout, R.string.warning_no_play_services,Snackbar.LENGTH_LONG).show();
+        }
 
 
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -63,33 +67,19 @@ public class HomeActivity extends AppCompatActivity
         staggeredAdapter = new StaggeredAdapter(mGoogleApiClient, cursor, HomeActivity.this);
         recyclerView.setAdapter(staggeredAdapter);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-
     }
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.content_home);
         emptyLayout = (CardView) findViewById(R.id.empty_layout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_home);
         getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
     }
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
@@ -116,31 +106,6 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(HomeActivity.this, SituationContract.SituationEntry.CONTENT_URI,
@@ -165,9 +130,9 @@ public class HomeActivity extends AppCompatActivity
         super.onResume();
         getSupportLoaderManager().restartLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
 
-        Cursor c = getContentResolver().query(SituationContract.SituationEntry.CONTENT_URI,new String[]{SituationContract.SituationEntry.COLUMN_ID},
-                SituationContract.SituationEntry.COLUMN_ACTION + "!= ?", new String[]{""},null);
-        if(c!=null) {
+        Cursor c = getContentResolver().query(SituationContract.SituationEntry.CONTENT_URI, new String[]{SituationContract.SituationEntry.COLUMN_ID},
+                SituationContract.SituationEntry.COLUMN_ACTION + "!= ?", new String[]{""}, null);
+        if (c != null) {
             if (c.getCount() != 0) {
                 emptyLayout.setVisibility(View.GONE);
             }

@@ -62,17 +62,16 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
 
     private void addDefaultDataToDatabase() {
         contentValues = new ContentValues[10];
-        addToContentValue(0, "Headphones Plugged", getString(R.string.headphone_plugged), "", "", "", "", "");
-        addToContentValue(1, "Headphones Un-Plugged", getString(R.string.headphone_unplugged), "", "", "", "", "");
-        addToContentValue(2, "Headphones Plugged and Still", getString(R.string.headphone_plugged), "", "", "", getString(R.string.still), "");
-        addToContentValue(3, "Headphones Plugged and Walking", getString(R.string.headphone_plugged), "", "", "", getString(R.string.walking), "");
-        addToContentValue(4, "Walking", "", "", "", "", getString(R.string.walking), "");
-        addToContentValue(5, "Running on a rainy day", getString(R.string.weather_rainy), "", "", "", getString(R.string.running), "");
-        addToContentValue(6, "Walking on a clear day", getString(R.string.weather_clear), "", "", "", getString(R.string.walking), "");
-        addToContentValue(7, "In Vehicle", "", "", "", "", getString(R.string.in_vehicle), "");
-        addToContentValue(8, "In Vehicle with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.in_vehicle), "");
-        addToContentValue(9, "Bicycling with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.on_bicycle), "");
-
+        addToContentValue(0, "Bicycling with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.on_bicycle), "");
+        addToContentValue(1, "In Vehicle with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.in_vehicle), "");
+        addToContentValue(2, "In Vehicle", "", "", "", "", getString(R.string.in_vehicle), "");
+        addToContentValue(3, "Walking on a clear day","" , getString(R.string.weather_clear), "", "", getString(R.string.walking), "");
+        addToContentValue(4, "Running on a rainy day", "", getString(R.string.weather_rainy), "", "", getString(R.string.running), "");
+        addToContentValue(5, "Walking", "", "", "", "", getString(R.string.walking), "");
+        addToContentValue(6, "Headphones Plugged and Walking", getString(R.string.headphone_plugged), "", "", "", getString(R.string.walking), "");
+        addToContentValue(7, "Headphones Plugged and Still", getString(R.string.headphone_plugged), "", "", "", getString(R.string.still), "");
+        addToContentValue(8, "Headphones Un-Plugged", getString(R.string.headphone_unplugged), "", "", "", "", "");
+        addToContentValue(9, "Headphones Plugged", getString(R.string.headphone_plugged), "", "", "", "", "");
 
         getContentResolver().bulkInsert(SituationContract.SituationEntry.CONTENT_URI,
                 contentValues);

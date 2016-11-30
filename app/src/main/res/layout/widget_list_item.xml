@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:background="@color/colorPrimary"
+    android:gravity="center_vertical"
+    android:padding="4dp"
+    android:id ="@+id/widget_item">
+
+    <TextView
+        android:id="@+id/situation_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:textAllCaps="true"
+        tools:text="GOOG" />
+</RelativeLayout>

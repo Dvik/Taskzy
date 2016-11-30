@@ -3,11 +3,13 @@ package dvik.com.taskzy.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 
@@ -17,6 +19,8 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import static dvik.com.taskzy.utils.Constants.ACTION_DATA_UPDATED;
 
 /**
  * Created by Divya on 11/16/2016.
@@ -78,6 +82,12 @@ public class Utils {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     requestCode);
         }
+    }
+
+    public static void updateWidgets(Context context) {
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
     }
 
 }

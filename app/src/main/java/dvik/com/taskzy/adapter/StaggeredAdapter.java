@@ -102,7 +102,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
 
         final Integer id = cursor.getInt(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ID));
         final String name = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_NAME));
-        final String heaphone = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE));
+        final String headphone = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE));
         final String weather = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_WEATHER_STATE));
         final String latitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LATITUDE));
         final String longitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LONGITUDE));
@@ -114,10 +114,10 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
 
         holder.situationTitle.setText("Open " + actionName);
 
-        if (TextUtils.isEmpty(heaphone)) {
+        if (TextUtils.isEmpty(headphone)) {
             holder.llHeadphone.setVisibility(View.GONE);
         } else {
-            holder.headphone.setText(heaphone);
+            holder.headphone.setText(headphone);
         }
 
         if (TextUtils.isEmpty(weather)) {
@@ -158,7 +158,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                 String[] stateArray;
 
                 stateArray = new String[]{String.valueOf(id),
-                        heaphone,
+                        headphone,
                         weather,
                         latitude,
                         longitude,
@@ -190,10 +190,12 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
 
         context.getContentResolver().update(SituationContract.SituationEntry.CONTENT_URI, contentValues,
                 SituationContract.SituationEntry.COLUMN_ID + "= ?", new String[]{String.valueOf(id)});
+        Utils.updateWidgets(context);
     }
 
     private void startSituationReceiver(final View container, final View progress, String[] stateArray, String action, String actionName) {
-
+        StringBuilder situationBuilderText=new StringBuilder();
+        situationBuilderText.append("Situation: ");
         Intent intent = new Intent(Constants.ACTION_FENCE);
         intent.putExtra("action", action);
         intent.putExtra("appName", actionName);
@@ -204,11 +206,15 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
 
         if (!stateArray[1].equals("")) {
             awarenessFences.add(HeadphoneFence.during(Constants.getHeadPhoneStateInteger(stateArray[1], context)));
+            situationBuilderText.append(stateArray[1]);
+            situationBuilderText.append(",");
         }
 
         if (!stateArray[2].equals("")) {
             Integer weatherId = Constants.getWeatherStateInteger(stateArray[2], context);
             intent.putExtra("Weather", weatherId);
+            situationBuilderText.append(stateArray[2]);
+            situationBuilderText.append(",");
         }
 
         if (!stateArray[3].equals("") && !stateArray[4].equals("")) {
@@ -216,16 +222,31 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
                 return;
             }
             awarenessFences.add(LocationFence.in(Double.parseDouble(stateArray[3]), Double.parseDouble(stateArray[4]), 50.00, 5000));
+            situationBuilderText.append("Latitude: ");
+            situationBuilderText.append(stateArray[3]);
+            situationBuilderText.append(",");
+            situationBuilderText.append("Longitude: ");
+            situationBuilderText.append(stateArray[4]);
+            situationBuilderText.append(",");
         }
 
         if (!stateArray[5].equals("")) {
             awarenessFences.add(DetectedActivityFence.during(Constants.getActivityStateInteger(stateArray[5], context)));
+            situationBuilderText.append(stateArray[5]);
+            situationBuilderText.append(",");
         }
 
         if (!stateArray[6].equals("")) {
             awarenessFences.add(TimeFence.inInterval(Long.parseLong(stateArray[6]), Long.MAX_VALUE));
+            situationBuilderText.append(Utils.getProperDate(Long.parseLong(stateArray[6]), "dd/MM/yyyy hh:mm"));
         }
 
+        String situationFinalText = situationBuilderText.toString();
+        if (situationFinalText.endsWith(",")) {
+            situationFinalText = situationFinalText.substring(0, situationFinalText.length() - 1);
+        }
+
+        intent.putExtra("situationDesc",situationFinalText);
         AwarenessFence customFence = AwarenessFence.and(awarenessFences);
 
         PendingIntent fencePendingIntent = PendingIntent.getBroadcast(context, Integer.valueOf(stateArray[0]), intent, 0);

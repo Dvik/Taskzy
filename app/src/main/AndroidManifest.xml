@@ -14,8 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace = "android:icon">
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-        <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
         <meta-data
             android:name="com.google.android.awareness.API_KEY"
@@ -86,6 +84,23 @@
             android:authorities="dvik.com.taskzy.provider.SituationProvider"
             android:enabled="true"
             android:exported="true"></provider>
+
+        <receiver
+            android:name=".widget.DetailWidgetProvider"
+            android:label="Taskzy Situations">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="dvik.com.taskzy.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/task_widget_info" />
+        </receiver>
+        <service
+            android:name=".widget.DetailWidgetRemoteViewsService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

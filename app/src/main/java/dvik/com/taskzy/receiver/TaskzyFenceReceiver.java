@@ -42,7 +42,6 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
 
         this.mContext = context;
         FenceState fenceState = FenceState.extract(intent);
-        Toast.makeText(context, "Received", Toast.LENGTH_SHORT).show();
         mGoogleApiClient = TaskApplication.getGoogleApiHelper().getGoogleApiClient();
 
         if (TextUtils.equals(intent.getStringExtra("id"), fenceState.getFenceKey())) {
@@ -51,6 +50,7 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
                 String id = intent.getStringExtra("id");
                 final Integer weatherId = intent.getIntExtra("Weather", 0);
                 final String appName = intent.getStringExtra("appName");
+                final String desc = intent.getStringExtra("situationDesc");
 
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     if (Utils.isPlayServicesAvailable(context)) {
@@ -62,12 +62,12 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
                                             Weather weather = weatherResult.getWeather();
 
                                             if (weather.getConditions()[0] == weatherId) {
-                                                showNotification(action,appName);
+                                                showNotification(action,appName,desc);
                                             }
                                         }
                                     });
                         } else {
-                            showNotification(action,appName);
+                            showNotification(action,appName,desc);
                         }
 
                     }
@@ -78,9 +78,8 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
 
     }
 
-    private void showNotification(String action,String appName)
+    private void showNotification(String action,String appName,String desc)
     {
-        Toast.makeText(mContext, "You have come to the right place dear", Toast.LENGTH_LONG).show();
         NotificationManager notificationManager = (NotificationManager)
                 mContext.getSystemService(NOTIFICATION_SERVICE);
 
@@ -94,6 +93,7 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
         // the addAction re-use the same intent to keep the example short
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setContentTitle("Open " + appName)
+                .setContentText(desc)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true);
