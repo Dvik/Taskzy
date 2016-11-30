@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ParseException;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,12 @@ import android.widget.Toast;
 
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,6 +45,9 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import dvik.com.taskzy.data.SituationContract;
+import dvik.com.taskzy.utils.Constants;
+
+import static dvik.com.taskzy.utils.Constants.PLACE_PICKER_REQUEST;
 
 public class AddSituationActivity extends AppCompatActivity {
 
@@ -193,7 +203,21 @@ public class AddSituationActivity extends AppCompatActivity {
         locationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(AddSituationActivity.this);
+
+                try {
+                    PlacePicker.IntentBuilder intentBuilder =
+                            new PlacePicker.IntentBuilder();
+                    LatLngBounds latLngBounds = new LatLngBounds(Constants.SOUTHWEST_INDIA_BOUND, Constants.NORTHEAST_INDIA_BOUND);
+                    intentBuilder.setLatLngBounds(latLngBounds);
+                    Intent intent = intentBuilder.build(AddSituationActivity.this);
+                    startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+
+                } catch (GooglePlayServicesRepairableException
+                        | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+
+                /*final AlertDialog.Builder builder = new AlertDialog.Builder(AddSituationActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_location, null);
 
@@ -223,7 +247,7 @@ public class AddSituationActivity extends AppCompatActivity {
                             }
                         });
 
-                builder.show();
+                builder.show();*/
 
             }
         });
@@ -282,16 +306,16 @@ public class AddSituationActivity extends AppCompatActivity {
         }
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(SituationContract.SituationEntry.COLUMN_NAME,nameText);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE,headPhoneText);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_WEATHER_STATE,weatherText);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_LATITUDE,latitudeText);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_LONGITUDE,longitudeText);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTIVITY,activityText);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_TIME,savedTime);
-        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION,"");
-        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION_NAME,"");
-        contentValues.put(SituationContract.SituationEntry.COLUMN_CHECKED,"0");
+        contentValues.put(SituationContract.SituationEntry.COLUMN_NAME, nameText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE, headPhoneText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_WEATHER_STATE, weatherText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_LATITUDE, latitudeText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_LONGITUDE, longitudeText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTIVITY, activityText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_TIME, savedTime);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION, "");
+        contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION_NAME, "");
+        contentValues.put(SituationContract.SituationEntry.COLUMN_CHECKED, "0");
 
 
         getContentResolver().insert(SituationContract.SituationEntry.CONTENT_URI,
@@ -323,4 +347,28 @@ public class AddSituationActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_create, menu);
         return true;
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+
+        if (requestCode == PLACE_PICKER_REQUEST
+                && resultCode == RESULT_OK) {
+
+            final Place place = PlacePicker.getPlace(this, data);
+            final CharSequence name = place.getName();
+            final LatLng latLng = place.getLatLng();
+
+            latitudeText = String.valueOf(latLng.latitude);
+            longitudeText = String.valueOf(latLng.longitude);
+
+            tvLocation.setText(latitudeText + "," + longitudeText);
+
+
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 }

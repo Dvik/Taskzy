@@ -8,7 +8,7 @@
     <string name="title_activity_situation_list">Situation</string>
     <string name="title_activity_add_situation">Add Situation</string>
 
-    <string name="google_play_services_key">AIzaSyDfcbW6E2YyTV9h7fuaRbWC5fQXm7xCERg</string>
+    <string name="google_play_services_key"></string>
     <string name="title_activity_create_pair">Create Pair</string>
     <string name="tap_to_choose">Tap to choose</string>
     <string name="title_activity_pick_task">Apps</string>
@@ -45,6 +45,33 @@
     <string name="warning_no_play_services">You need to have the play services updated to use this app</string>
         <string name="activated_situations">ACTIVATED SITUATIONS</string>
     <string name="loading_widget">Loading..</string>
+    <string name="tag_line">Automate your task</string>
+    <string name="share_text">What if i tell you that there\'s an app that would automatically open your favorite music player when you are outside and it\'s raining or when you are at your home, it automatically open your favorite news reader. For more such awesome situation-actions download Taskzy : https://play.google.com/store/apps/details?id=dvik.com.taskzy</string>
+    <string name="share">Share</string>
+    <string name="feedback">Feedback</string>
+    <string name="rate_on_playstore">Rate on Playstore</string>
+    <string name="add_button_content">Add a situation-action pair</string>
+    <string name="headphone_state">Headphone State</string>
+    <string name="weather">Weather</string>
+    <string name="location">Location</string>
+    <string name="user_activity">User Activity</string>
+    <string name="time">Time</string>
+    <string name="tap_to_add_headphone_state">Tap to add headphone state</string>
+    <string name="tap_to_add_weather_state">Tap to add weather state</string>
+    <string name="tap_to_pick_a_location">Tap to pick a location</string>
+    <string name="tap_to_add_user_activity">Tap to add user activity</string>
+    <string name="tap_to_add_time">Tap to add time</string>
+    <string name="cancel_adding_headphone_state">Cancel adding headphone state</string>
+    <string name="cancel_weather_state">Cancel weather state</string>
+    <string name="cancel_location">Cancel adding location state</string>
+    <string name="cancel_user_activity_state">Cancel user activity state</string>
+    <string name="cancel_time_state">Cancel time state</string>
+    <string name="add_app">Add app</string>
+    <string name="add_situation">Add situation</string>
+    <string name="title">Title</string>
+    <string name="headphone">Headphone</string>
+    <string name="activity">Activity</string>
+    <string name="situation_action_pair">Situation-Action Pair</string>
 
 
 </resources>

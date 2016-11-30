@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.android.gms.awareness.fence.DetectedActivityFence;
 import com.google.android.gms.awareness.state.HeadphoneState;
 import com.google.android.gms.awareness.state.Weather;
+import com.google.android.gms.maps.model.LatLng;
 
 import dvik.com.taskzy.R;
 
@@ -19,8 +20,12 @@ public class Constants {
     public final static int TASK_REQUEST_CODE = 1000;
     public final static int SITUATION_REQUEST_CODE = 1001;
     public final static int LOCATION_REQUEST_CODE =1002;
+    public final static int PLACE_PICKER_REQUEST = 1003;
     public static final String ACTION_DATA_UPDATED =
             "dvik.com.taskzy.ACTION_DATA_UPDATED";
+    public static final LatLng SOUTHWEST_INDIA_BOUND= new LatLng(7.110198,60.754470);
+    public static final LatLng NORTHEAST_INDIA_BOUND= new LatLng(36.2994113,96.8162293);
+
 
     public static int getHeadPhoneStateInteger(String state, Context context) {
 

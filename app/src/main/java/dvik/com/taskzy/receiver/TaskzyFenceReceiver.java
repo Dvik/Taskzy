@@ -86,15 +86,12 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
         Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(action);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // use System.currentTimeMillis() to have a unique ID for the pending intent
         PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
 
-        // build notification
-        // the addAction re-use the same intent to keep the example short
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setContentTitle("Open " + appName)
                 .setContentText(desc)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true);
 

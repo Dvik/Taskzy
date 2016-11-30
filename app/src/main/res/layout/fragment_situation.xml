@@ -20,7 +20,7 @@
             android:background="@android:color/white"
             android:gravity="center"
             android:padding="20dp"
-            android:text="Situation Name" />
+            android:text="@string/situation_name" />
 
     </android.support.v7.widget.CardView>
 
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:elevation="6dp"
+            android:contentDescription="@string/add_situation"
             app:fabSize="normal"
             app:pressedTranslationZ="6dp"
             app:srcCompat="@drawable/ic_plus" />

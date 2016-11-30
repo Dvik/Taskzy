@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/content_add_situation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="dvik.com.taskzy.AddSituationActivity"
         tools:showIn="@layout/activity_add_situation">
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/name_card"
             android:layout_margin="10dp"
+            android:contentDescription="@string/tap_to_add_headphone_state"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -77,13 +78,14 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_toRightOf="@+id/item_image"
+                        android:layout_toEndOf="@+id/item_image"
                         android:orientation="vertical"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Headphone State"
+                            android:text="@string/headphone_state"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
@@ -104,6 +106,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
                     android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:focusable="true"
+                    android:contentDescription="@string/cancel_adding_headphone_state"
                     app:srcCompat="@drawable/ic_error" />
 
 
@@ -116,6 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/headphone_card"
             android:layout_margin="10dp"
+            android:contentDescription="@string/tap_to_add_weather_state"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -140,13 +146,14 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_toRightOf="@+id/item_image1"
+                        android:layout_toEndOf="@+id/item_image1"
                         android:orientation="vertical"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Weather"
+                            android:text="@string/weather"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
@@ -167,6 +174,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
                     android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:focusable="true"
+                    android:contentDescription="@string/cancel_weather_state"
                     app:srcCompat="@drawable/ic_error" />
 
 
@@ -179,6 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/weather_card"
             android:layout_margin="10dp"
+            android:contentDescription="@string/tap_to_pick_a_location"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -203,13 +214,14 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_toRightOf="@+id/item_image2"
+                        android:layout_toEndOf="@+id/item_image2"
                         android:orientation="vertical"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Location"
+                            android:text="@string/location"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
@@ -230,6 +242,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
                     android:layout_marginRight="10dp"
+                    android:focusable="true"
+                    android:contentDescription="@string/cancel_location"
+                    android:layout_marginEnd="10dp"
                     app:srcCompat="@drawable/ic_error" />
 
 
@@ -242,6 +257,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/location_card"
             android:layout_margin="10dp"
+            android:contentDescription="@string/tap_to_add_user_activity"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -266,13 +282,14 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_toRightOf="@+id/item_image3"
+                        android:layout_toEndOf="@+id/item_image3"
                         android:orientation="vertical"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="User Activity"
+                            android:text="@string/user_activity"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
@@ -293,6 +310,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
                     android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:focusable="true"
+                    android:contentDescription="@string/cancel_user_activity_state"
                     app:srcCompat="@drawable/ic_error" />
 
 
@@ -305,6 +325,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_activity_card"
             android:layout_margin="10dp"
+            android:contentDescription="@string/tap_to_add_time"
             android:foreground="?selectableItemBackground">
 
             <FrameLayout
@@ -329,13 +350,14 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_toRightOf="@+id/item_image5"
+                        android:layout_toEndOf="@+id/item_image5"
                         android:orientation="vertical"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time"
+                            android:text="@string/time"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
@@ -356,6 +378,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="end|center"
                     android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:focusable="true"
+                    android:contentDescription="@string/cancel_time_state"
                     app:srcCompat="@drawable/ic_error" />
 
 
