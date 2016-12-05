@@ -289,6 +289,8 @@ public class CreatePairActivity extends AppCompatActivity implements PassSituati
         getContentResolver().update(SituationContract.SituationEntry.CONTENT_URI,contentValues,
                 SituationContract.SituationEntry.COLUMN_ID + "= ?",new String[]{String.valueOf(id)});
 
+        getContentResolver().notifyChange(SituationContract.SituationEntry.CONTENT_URI, null, false);
+
         finish();
 
     }

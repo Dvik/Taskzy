@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -92,7 +93,10 @@ public class TaskzyFenceReceiver extends BroadcastReceiver {
                 .setContentTitle("Open " + appName)
                 .setContentText(desc)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setColor(ContextCompat.getColor(mContext,R.color.colorPrimary))
                 .setContentIntent(pIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(desc))
                 .setAutoCancel(true);
 
         Notification notification = notificationBuilder.build();

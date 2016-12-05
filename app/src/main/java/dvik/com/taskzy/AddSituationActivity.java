@@ -56,7 +56,7 @@ public class AddSituationActivity extends AppCompatActivity {
     CardView headPhoneCard, weatherCard, locationCard, activityCard, timeCard;
     TextView tvHeadphone, tvWeather, tvLocation, tvActivity, tvTime;
     EditText nameEdt;
-    String nameText, headPhoneText, weatherText, latitudeText, longitudeText, activityText, timeText;
+    String nameText, headPhoneText, weatherText, latitudeText, longitudeText, activityText, timeText, placeText;
     Long timeLongText;
     CoordinatorLayout coordinatorLayout;
 
@@ -95,7 +95,7 @@ public class AddSituationActivity extends AppCompatActivity {
         nameEdt = (EditText) findViewById(R.id.name_edt);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
 
-        nameText = headPhoneText = weatherText = latitudeText = longitudeText = activityText = timeText = "";
+        nameText = headPhoneText = weatherText = latitudeText = longitudeText = activityText = timeText = placeText ="";
         timeLongText = 0L;
     }
 
@@ -104,6 +104,7 @@ public class AddSituationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 headPhoneCard.setVisibility(View.GONE);
+                headPhoneText = "";
             }
         });
 
@@ -111,6 +112,7 @@ public class AddSituationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 weatherCard.setVisibility(View.GONE);
+                weatherText = "";
             }
         });
 
@@ -118,6 +120,9 @@ public class AddSituationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 locationCard.setVisibility(View.GONE);
+                latitudeText = "";
+                longitudeText = "";
+                placeText = "";
             }
         });
 
@@ -125,6 +130,7 @@ public class AddSituationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 activityCard.setVisibility(View.GONE);
+                activityText = "";
             }
         });
 
@@ -132,6 +138,8 @@ public class AddSituationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 timeCard.setVisibility(View.GONE);
+                timeText = "";
+                timeLongText = 0L;
             }
         });
 
@@ -311,6 +319,7 @@ public class AddSituationActivity extends AppCompatActivity {
         contentValues.put(SituationContract.SituationEntry.COLUMN_WEATHER_STATE, weatherText);
         contentValues.put(SituationContract.SituationEntry.COLUMN_LATITUDE, latitudeText);
         contentValues.put(SituationContract.SituationEntry.COLUMN_LONGITUDE, longitudeText);
+        contentValues.put(SituationContract.SituationEntry.COLUMN_PLACE, placeText);
         contentValues.put(SituationContract.SituationEntry.COLUMN_ACTIVITY, activityText);
         contentValues.put(SituationContract.SituationEntry.COLUMN_TIME, savedTime);
         contentValues.put(SituationContract.SituationEntry.COLUMN_ACTION, "");
@@ -357,13 +366,14 @@ public class AddSituationActivity extends AppCompatActivity {
                 && resultCode == RESULT_OK) {
 
             final Place place = PlacePicker.getPlace(this, data);
-            final CharSequence name = place.getName();
+            final String name = place.getAddress().toString();
             final LatLng latLng = place.getLatLng();
 
             latitudeText = String.valueOf(latLng.latitude);
             longitudeText = String.valueOf(latLng.longitude);
+            placeText = name;
 
-            tvLocation.setText(latitudeText + "," + longitudeText);
+            tvLocation.setText(placeText);
 
 
         } else {

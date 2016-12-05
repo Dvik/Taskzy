@@ -57,12 +57,14 @@ public class SituationProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
+                retCursor.setNotificationUri(getContext().getContentResolver(), uri);
                 return retCursor;
             }
             default:{
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
         }
+
     }
 
     @Override

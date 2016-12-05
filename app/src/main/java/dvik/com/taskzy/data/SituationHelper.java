@@ -30,6 +30,7 @@ public class SituationHelper extends SQLiteOpenHelper {
                 SituationContract.SituationEntry.COLUMN_WEATHER_STATE + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_LATITUDE + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_LONGITUDE + " TEXT NOT NULL, " +
+                SituationContract.SituationEntry.COLUMN_PLACE + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_ACTIVITY + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_TIME + " TEXT NOT NULL, " +
                 SituationContract.SituationEntry.COLUMN_ACTION + " TEXT NOT NULL, " +

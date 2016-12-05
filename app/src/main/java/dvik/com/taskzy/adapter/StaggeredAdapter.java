@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,6 @@ import com.google.android.gms.common.api.ResultCallbacks;
 import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 import dvik.com.taskzy.R;
 import dvik.com.taskzy.data.SituationContract;
@@ -106,6 +104,7 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
         final String weather = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_WEATHER_STATE));
         final String latitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LATITUDE));
         final String longitude = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_LONGITUDE));
+        final String place = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_PLACE));
         final String userActivity = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTIVITY));
         final String time = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_TIME));
         final String action = cursor.getString(cursor.getColumnIndex(SituationContract.SituationEntry.COLUMN_ACTION));
@@ -126,10 +125,10 @@ public class StaggeredAdapter extends CursorRecyclerViewAdapter<StaggeredAdapter
             holder.weather.setText(weather);
         }
 
-        if (TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude)) {
+        if (TextUtils.isEmpty(place)) {
             holder.llLocation.setVisibility(View.GONE);
         } else {
-            holder.location.setText(latitude + "," + longitude);
+            holder.location.setText(place);
         }
 
         if (TextUtils.isEmpty(userActivity)) {

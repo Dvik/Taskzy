@@ -98,6 +98,7 @@ public class HomeActivity extends AppCompatActivity
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_home);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab_add);
         getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
+
     }
 
 
@@ -188,6 +189,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+
         getSupportLoaderManager().restartLoader(CURSOR_LOADER_ID, null, HomeActivity.this);
 
         Cursor c = getContentResolver().query(SituationContract.SituationEntry.CONTENT_URI,

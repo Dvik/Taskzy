@@ -62,28 +62,29 @@ public class SituationListActivity extends AppCompatActivity implements LoaderMa
 
     private void addDefaultDataToDatabase() {
         contentValues = new ContentValues[10];
-        addToContentValue(0, "Bicycling with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.on_bicycle), "");
-        addToContentValue(1, "In Vehicle with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", getString(R.string.in_vehicle), "");
-        addToContentValue(2, "In Vehicle", "", "", "", "", getString(R.string.in_vehicle), "");
-        addToContentValue(3, "Walking on a clear day","" , getString(R.string.weather_clear), "", "", getString(R.string.walking), "");
-        addToContentValue(4, "Running on a rainy day", "", getString(R.string.weather_rainy), "", "", getString(R.string.running), "");
-        addToContentValue(5, "Walking", "", "", "", "", getString(R.string.walking), "");
-        addToContentValue(6, "Headphones Plugged and Walking", getString(R.string.headphone_plugged), "", "", "", getString(R.string.walking), "");
-        addToContentValue(7, "Headphones Plugged and Still", getString(R.string.headphone_plugged), "", "", "", getString(R.string.still), "");
-        addToContentValue(8, "Headphones Un-Plugged", getString(R.string.headphone_unplugged), "", "", "", "", "");
-        addToContentValue(9, "Headphones Plugged", getString(R.string.headphone_plugged), "", "", "", "", "");
+        addToContentValue(0, "Bicycling with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "","", getString(R.string.on_bicycle), "");
+        addToContentValue(1, "In Vehicle with Headphones plugged in", getString(R.string.headphone_plugged), "", "", "", "",getString(R.string.in_vehicle), "");
+        addToContentValue(2, "In Vehicle", "", "", "", "","", getString(R.string.in_vehicle), "");
+        addToContentValue(3, "Walking on a clear day","" , getString(R.string.weather_clear), "", "", "",getString(R.string.walking), "");
+        addToContentValue(4, "Running on a rainy day", "", getString(R.string.weather_rainy), "", "", "",getString(R.string.running), "");
+        addToContentValue(5, "Walking", "", "", "", "", "",getString(R.string.walking), "");
+        addToContentValue(6, "Headphones Plugged and Walking", getString(R.string.headphone_plugged), "", "", "", "",getString(R.string.walking), "");
+        addToContentValue(7, "Headphones Plugged and Still", getString(R.string.headphone_plugged), "", "", "", "",getString(R.string.still), "");
+        addToContentValue(8, "Headphones Un-Plugged", getString(R.string.headphone_unplugged), "", "", "", "","", "");
+        addToContentValue(9, "Headphones Plugged", getString(R.string.headphone_plugged), "", "", "", "", "","");
 
         getContentResolver().bulkInsert(SituationContract.SituationEntry.CONTENT_URI,
                 contentValues);
     }
 
-    private void addToContentValue(int i, String name, String headphone, String weather, String lat, String lon, String activity, String time) {
+    private void addToContentValue(int i, String name, String headphone, String weather, String lat, String lon, String place, String activity, String time) {
         contentValues[i] = new ContentValues();
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_NAME, name);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_HEADPHONE_STATE, headphone);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_WEATHER_STATE, weather);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_LATITUDE, lat);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_LONGITUDE, lon);
+        contentValues[i].put(SituationContract.SituationEntry.COLUMN_PLACE, place);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTIVITY, activity);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_TIME, time);
         contentValues[i].put(SituationContract.SituationEntry.COLUMN_ACTION, "");
