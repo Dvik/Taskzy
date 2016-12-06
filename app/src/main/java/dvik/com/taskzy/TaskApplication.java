@@ -1,6 +1,7 @@
 package dvik.com.taskzy;
 
 import android.app.Application;
+import android.support.v7.app.AppCompatDelegate;
 
 import dvik.com.taskzy.utils.GoogleApiHelper;
 
@@ -18,6 +19,10 @@ public class TaskApplication extends Application {
 
         mInstance = this;
         googleApiHelper = new GoogleApiHelper(getApplicationContext());
+    }
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     public static synchronized TaskApplication getInstance() {
