@@ -4,9 +4,11 @@ https://play.google.com/store/apps/details?id=dvik.com.taskzy
 
 # Contribute
 
-Contribution are always welcome. If you feel you find the app lacking in some aspect, just create an issue or better create a PR.
+Contributions are always welcome. If you feel you find the app lacking in some aspect, just create an issue or better create a PR.
 
-You would have to generate your own keys for the Google Awareness API.
+# Build
+
+You would have to generate your own keys for the Google Awareness API and 
 
 # Featured
 
