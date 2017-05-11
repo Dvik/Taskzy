@@ -8,7 +8,7 @@
     <string name="title_activity_situation_list">Situation</string>
     <string name="title_activity_add_situation">Add Situation</string>
 
-    <string name="google_play_services_key">AIzaSyD4x7kdqo2p4cTdl9IBEML-k5HMOvoZHZY</string>
+    <string name="google_play_services_key"></string>
     <string name="title_activity_create_pair">Create Pair</string>
     <string name="tap_to_choose">Tap to choose</string>
     <string name="title_activity_pick_task">Apps</string>
