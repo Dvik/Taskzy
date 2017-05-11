@@ -8,7 +8,7 @@ Contributions are always welcome. If you feel you find the app lacking in some a
 
 # Build
 
-You would have to generate your own keys for the Google Awareness API and 
+For building the app, you would have to generate your own keys for the Google Awareness API and insert it in strings.xml 
 
 # Featured
 
