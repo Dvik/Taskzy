@@ -87,7 +87,7 @@ public class Constants {
             return DetectedActivityFence.STILL;
 
         if (state.equals(context.getString(R.string.tilting)))
-            return DetectedActivityFence.TILTING;
+            return DetectedActivityFence.UNKNOWN;
 
         if (state.equals(context.getString(R.string.walking)))
             return DetectedActivityFence.WALKING;
